@@ -1,18 +1,11 @@
 INCLUDE Irvine32.inc
-
-input PROTO
-move PROTO
+sj24 PROTO
 
 boxSize = 4
 
 .data
-boxSquare BYTE  2, 0, 2, 2,
-                0, 0, 0, 0,
-                4, 8, 2, 2,
-                0, 2, 2, 0
-
-consoleHandle DWORD ?
-outputHandle DWORD 0
+boxSquare BYTE boxSize * boxSize DUP(0)
+generateList BYTE 8 DUP(2), 4
 
 main EQU start@0
 .code
@@ -26,6 +19,8 @@ input PROC
 		mov eax, 21
 	.ELSEIF ax == 5000h ;DOWN ARROW
 		mov eax, 22
+    .ELSE
+        mov eax, 33
 	.ENDIF
 
     ret
@@ -349,21 +344,116 @@ move PROC
         jl down_i_loop
 
 		.ENDIF
+        .ELSE
+            INVOKE input
 	.ENDIF
 
     ret
 move ENDP
 
+get PROC
+    mov eax, 0; 第幾個element
+    mov ebx, boxSize * boxSize; element總數
+    mov ecx, 0; 幾個非0值
+    mov esi, 0
+
+    mov dl, 0
+    get_check_loop:
+        cmp [boxSquare + eax], dl
+        jne get_not_zero
+        push eax
+        inc ecx
+    
+    get_not_zero:
+        inc eax
+        cmp eax, ebx
+        jl get_check_loop
+    
+    get_test_square_full:
+        ; 這裡之後要加結束的判斷式
+        cmp ecx, esi
+        mov ebx, ecx
+        je get_is_full
+        mov edx, 0
+        rdrand eax
+        div ecx
+        mov ecx, 0
+
+    get_replace_zero:
+        dec ebx
+        pop eax
+        cmp ebx, ecx
+        je get_end_phase
+        cmp edx, ebx
+        jne get_replace_zero
+        mov esi, eax
+        push ecx
+        push edx
+        INVOKE sj24
+        mov [boxSquare + esi], al
+        pop edx
+        pop ecx
+        jmp get_replace_zero
+
+    get_is_full:
+        dec ebx
+        pop eax
+        cmp ebx, ecx
+        je get_is_full
+        ret
+
+    get_end_phase:
+        ret
+get ENDP
+    
+init PROC
+    mov ebx, boxSize * boxSize; element總數
+    mov ecx, 0; 幾個非0值
+    mov edx, 0
+    
+    rdrand eax
+    div ebx
+    mov ecx, edx
+
+    init_second_time:
+        mov edx, 0
+        rdrand eax
+        div ebx
+        cmp ecx, edx
+        je init_second_time
+        push ecx
+        push edx
+        INVOKE sj24
+        pop ecx
+        mov [boxSquare + ecx], al
+        pop edx
+        INVOKE sj24
+        mov [boxSquare + edx], al
+        ret
+
+init ENDP
+
+sj24 PROC
+    mov ecx, 9
+    mov edx, 0
+    rdrand eax
+    div ecx
+    movzx eax, [generateList + edx]
+    ret
+sj24 ENDP
+
 main PROC
     mov esi, OFFSET boxSquare
 
+    INVOKE init ; 用兩個2或4添加到boxSquare裡進行初始化
+
     game_loop:
-        INVOKE move
+        INVOKE get ; 添加2或4到boxSquare裡
+        INVOKE move ; 接收上下左右，然後更新陣列
         jmp game_loop
-	
-    mov ax, 0
-	   call WaitMsg
-	   call Clrscr
+
+	    call WaitMsg
+	    call Clrscr
 	exit
 main ENDP
 END main

@@ -47,24 +47,24 @@ move PROC
 			mov esi, 0
             mov edi, 0
 		right_j_loop:
-			; ­pºâa[i][j]¦b°}¦C¤¤ªº°¾²¾
+			; è¨ˆç®—a[i][j]åœ¨é™£åˆ—ä¸­çš„åç§»
             mov eax, ecx
             imul eax, boxSize
             add eax, esi
 
-            ; ÀË¬da[i][j-1]==0
+            ; æª¢æŸ¥a[i][j-1]==0
             
             mov ebx, 0
             cmp [boxSquare + eax], bl
             jne right_not_zero
 
-            ; ¦pªG¬°0¡A«h±Na[i][j-1]³]¸m¬°a[i][j]
+            ; å¦‚æœç‚º0ï¼Œå‰‡å°‡a[i][j-1]è¨­ç½®ç‚ºa[i][j]
             cmp edi, ebx
             je right_not_meet_nonzero
             mov bl, [boxSquare + eax - 1]
             mov [boxSquare + eax], bl
 
-            ; ±Na[i][j]³]¸m¬°0
+            ; å°‡a[i][j]è¨­ç½®ç‚º0
             mov bl, 0
             mov [boxSquare + eax - 1], bl
             mov edi, 0
@@ -78,7 +78,7 @@ move PROC
             mov esi, 0
             jmp right_j_add_loop
 		right_not_zero:
-            ; ´î¤pj
+            ; æ¸›å°j
             inc edi
             inc esi
             cmp esi, boxSize
@@ -86,19 +86,19 @@ move PROC
             mov esi, 0
             jmp right_j_add_loop
 
-        ; ²Ä¤G¨B¡A±N¬Û¾F¨â¨â¬Û¦Pªº¼Æ¬Û¥[¡A½á­È«eªÌ¡A«áªÌ½á0
+        ; ç¬¬äºŒæ­¥ï¼Œå°‡ç›¸é„°å…©å…©ç›¸åŒçš„æ•¸ç›¸åŠ ï¼Œè³¦å€¼å‰è€…ï¼Œå¾Œè€…è³¦0
 		right_j_add_loop:
-            ; ­pºâa[i][j]¦b°}¦C¤¤ªº°¾²¾
+            ; è¨ˆç®—a[i][j]åœ¨é™£åˆ—ä¸­çš„åç§»
             mov eax, ecx
             imul eax, boxSize
             add eax, esi
 
-            ; ÀË¬da[i][j]¬O§_µ¥©óa[i][j+1]
+            ; æª¢æŸ¥a[i][j]æ˜¯å¦ç­‰æ–¼a[i][j+1]
             mov bl, [boxSquare + eax + 1]
             cmp [boxSquare + eax], bl
             jne right_not_equal
 
-            ; ¦pªG¬Ûµ¥¡A±Na[i][j]¥[¤Wa[i][j+1]¡A¨Ã±Na[i][j+1]³]¸m¬°0
+            ; å¦‚æœç›¸ç­‰ï¼Œå°‡a[i][j]åŠ ä¸Ša[i][j+1]ï¼Œä¸¦å°‡a[i][j+1]è¨­ç½®ç‚º0
             mov bl, [boxSquare + eax]
             add [boxSquare + eax + 1], bl
             mov bl, 0
@@ -107,13 +107,13 @@ move PROC
             jne right_i_loop
 
         right_not_equal:
-            ; ¼W¥[j
+            ; å¢åŠ j
             inc esi
             cmp esi, boxSize - 1
             jl right_j_add_loop
             mov esi, 0
 
-        ; ¼W¥[i
+        ; å¢åŠ i
         inc ecx
         cmp ecx, boxSize
         jl right_i_loop
@@ -125,24 +125,24 @@ move PROC
 			mov esi, boxSize
             mov edi, 0
 		left_j_loop:
-			; ­pºâa[i][j]¦b°}¦C¤¤ªº°¾²¾
+			; è¨ˆç®—a[i][j]åœ¨é™£åˆ—ä¸­çš„åç§»
             mov eax, ecx
             imul eax, boxSize
             add eax, esi
 
-            ; ÀË¬da[i][j-1]==0
+            ; æª¢æŸ¥a[i][j-1]==0
             
             mov ebx, 0
             cmp [boxSquare + eax - 1], bl
             jne left_not_zero
 
-            ; ¦pªG¬°0¡A«h±Na[i][j-1]³]¸m¬°a[i][j]
+            ; å¦‚æœç‚º0ï¼Œå‰‡å°‡a[i][j-1]è¨­ç½®ç‚ºa[i][j]
             cmp edi, ebx
             je left_not_meet_nonzero
             mov bl, [boxSquare + eax]
             mov [boxSquare + eax - 1], bl
 
-            ; ±Na[i][j]³]¸m¬°0
+            ; å°‡a[i][j]è¨­ç½®ç‚º0
             mov bl, 0
             mov [boxSquare + eax], bl
             mov edi, 0
@@ -155,26 +155,26 @@ move PROC
             mov esi, boxSize - 1
             jmp left_j_add_loop
 		left_not_zero:
-            ; ´î¤pj
+            ; æ¸›å°j
             inc edi
             dec esi
             jg left_j_loop
             mov esi, boxSize - 1
             jmp left_j_add_loop
 
-        ; ²Ä¤G¨B¡A±N¬Û¾F¨â¨â¬Û¦Pªº¼Æ¬Û¥[¡A½á­È«eªÌ¡A«áªÌ½á0
+        ; ç¬¬äºŒæ­¥ï¼Œå°‡ç›¸é„°å…©å…©ç›¸åŒçš„æ•¸ç›¸åŠ ï¼Œè³¦å€¼å‰è€…ï¼Œå¾Œè€…è³¦0
 		left_j_add_loop:
-            ; ­pºâa[i][j]¦b°}¦C¤¤ªº°¾²¾
+            ; è¨ˆç®—a[i][j]åœ¨é™£åˆ—ä¸­çš„åç§»
             mov eax, ecx
             imul eax, boxSize
             add eax, esi
 
-            ; ÀË¬da[i][j]¬O§_µ¥©óa[i][j+1]
+            ; æª¢æŸ¥a[i][j]æ˜¯å¦ç­‰æ–¼a[i][j+1]
             mov bl, [boxSquare + eax]
             cmp [boxSquare + eax - 1], bl
             jne left_not_equal
 
-            ; ¦pªG¬Ûµ¥¡A±Na[i][j]¥[¤Wa[i][j+1]¡A¨Ã±Na[i][j+1]³]¸m¬°0
+            ; å¦‚æœç›¸ç­‰ï¼Œå°‡a[i][j]åŠ ä¸Ša[i][j+1]ï¼Œä¸¦å°‡a[i][j+1]è¨­ç½®ç‚º0
             mov bl, [boxSquare + eax]
             add [boxSquare + eax - 1], bl
             mov bl, 0
@@ -183,12 +183,12 @@ move PROC
             jne left_i_loop
 
         left_not_equal:
-            ; ¼W¥[j
+            ; å¢åŠ j
             dec esi
             jg left_j_add_loop
             mov esi, 0
 
-        ; ¼W¥[i
+        ; å¢åŠ i
         inc ecx
         cmp ecx, boxSize
         jl left_i_loop
@@ -202,24 +202,24 @@ move PROC
 			mov esi, boxSize
             mov edi, 0
 		up_j_loop:
-			; ­pºâa[i][j]¦b°}¦C¤¤ªº°¾²¾
+			; è¨ˆç®—a[i][j]åœ¨é™£åˆ—ä¸­çš„åç§»
             mov eax, esi
             imul eax, boxSize
             add eax, ecx
 
-            ; ÀË¬da[i][j-1]==0
+            ; æª¢æŸ¥a[i][j-1]==0
             
             mov ebx, 0
             cmp [boxSquare + eax - boxSize], bl
             jne up_not_zero
 
-            ; ¦pªG¬°0¡A«h±Na[i][j-1]³]¸m¬°a[i][j]
+            ; å¦‚æœç‚º0ï¼Œå‰‡å°‡a[i][j-1]è¨­ç½®ç‚ºa[i][j]
             cmp edi, ebx
             je up_not_meet_nonzero
             mov bl, [boxSquare + eax]
             mov [boxSquare + eax - boxSize], bl
 
-            ; ±Na[i][j]³]¸m¬°0
+            ; å°‡a[i][j]è¨­ç½®ç‚º0
             mov bl, 0
             mov [boxSquare + eax], bl
             mov edi, 0
@@ -232,26 +232,26 @@ move PROC
             mov esi, boxSize - 1
             jmp up_j_add_loop
 		up_not_zero:
-            ; ´î¤pj
+            ; æ¸›å°j
             inc edi
             dec esi
             jg up_j_loop
             mov esi, boxSize - 1
             jmp up_j_add_loop
 
-        ; ²Ä¤G¨B¡A±N¬Û¾F¨â¨â¬Û¦Pªº¼Æ¬Û¥[¡A½á­È«eªÌ¡A«áªÌ½á0
+        ; ç¬¬äºŒæ­¥ï¼Œå°‡ç›¸é„°å…©å…©ç›¸åŒçš„æ•¸ç›¸åŠ ï¼Œè³¦å€¼å‰è€…ï¼Œå¾Œè€…è³¦0
 		up_j_add_loop:
-            ; ­pºâa[i][j]¦b°}¦C¤¤ªº°¾²¾
+            ; è¨ˆç®—a[i][j]åœ¨é™£åˆ—ä¸­çš„åç§»
             mov eax, esi
             imul eax, boxSize
             add eax, ecx
 
-            ; ÀË¬da[i][j]¬O§_µ¥©óa[i][j+1]
+            ; æª¢æŸ¥a[i][j]æ˜¯å¦ç­‰æ–¼a[i][j+1]
             mov bl, [boxSquare + eax]
             cmp [boxSquare + eax - boxSize], bl
             jne up_not_equal
 
-            ; ¦pªG¬Ûµ¥¡A±Na[i][j]¥[¤Wa[i][j+1]¡A¨Ã±Na[i][j+1]³]¸m¬°0
+            ; å¦‚æœç›¸ç­‰ï¼Œå°‡a[i][j]åŠ ä¸Ša[i][j+1]ï¼Œä¸¦å°‡a[i][j+1]è¨­ç½®ç‚º0
             mov bl, [boxSquare + eax]
             add [boxSquare + eax - boxSize], bl
             mov bl, 0
@@ -260,12 +260,12 @@ move PROC
             jne up_i_loop
 
         up_not_equal:
-            ; ¼W¥[j
+            ; å¢åŠ j
             dec esi
             jg up_j_add_loop
             mov esi, 0
 
-        ; ¼W¥[i
+        ; å¢åŠ i
         inc ecx
         cmp ecx, boxSize
         jl up_i_loop
@@ -277,24 +277,24 @@ move PROC
 			mov esi, 0
             mov edi, 0
 		down_j_loop:
-			; ­pºâa[i][j]¦b°}¦C¤¤ªº°¾²¾
+			; è¨ˆç®—a[i][j]åœ¨é™£åˆ—ä¸­çš„åç§»
             mov eax, esi
             imul eax, boxSize
             add eax, ecx
 
-            ; ÀË¬da[i][j-1]==0
+            ; æª¢æŸ¥a[i][j-1]==0
             
             mov ebx, 0
             cmp [boxSquare + eax], bl
             jne down_not_zero
 
-            ; ¦pªG¬°0¡A«h±Na[i][j-1]³]¸m¬°a[i][j]
+            ; å¦‚æœç‚º0ï¼Œå‰‡å°‡a[i][j-1]è¨­ç½®ç‚ºa[i][j]
             cmp edi, ebx
             je down_not_meet_nonzero
             mov bl, [boxSquare + eax - boxSize]
             mov [boxSquare + eax], bl
 
-            ; ±Na[i][j]³]¸m¬°0
+            ; å°‡a[i][j]è¨­ç½®ç‚º0
             mov bl, 0
             mov [boxSquare + eax - boxSize], bl
             mov edi, 0
@@ -308,7 +308,7 @@ move PROC
             mov esi, 0
             jmp down_j_add_loop
 		down_not_zero:
-            ; ´î¤pj
+            ; æ¸›å°j
             inc edi
             inc esi
             cmp esi, boxSize
@@ -316,19 +316,19 @@ move PROC
             mov esi, 0
             jmp down_j_add_loop
 
-        ; ²Ä¤G¨B¡A±N¬Û¾F¨â¨â¬Û¦Pªº¼Æ¬Û¥[¡A½á­È«eªÌ¡A«áªÌ½á0
+        ; ç¬¬äºŒæ­¥ï¼Œå°‡ç›¸é„°å…©å…©ç›¸åŒçš„æ•¸ç›¸åŠ ï¼Œè³¦å€¼å‰è€…ï¼Œå¾Œè€…è³¦0
 		down_j_add_loop:
-            ; ­pºâa[i][j]¦b°}¦C¤¤ªº°¾²¾
+            ; è¨ˆç®—a[i][j]åœ¨é™£åˆ—ä¸­çš„åç§»
             mov eax, esi
             imul eax, boxSize
             add eax, ecx
 
-            ; ÀË¬da[i][j]¬O§_µ¥©óa[i][j+1]
+            ; æª¢æŸ¥a[i][j]æ˜¯å¦ç­‰æ–¼a[i][j+1]
             mov bl, [boxSquare + eax + boxSize]
             cmp [boxSquare + eax], bl
             jne down_not_equal
 
-            ; ¦pªG¬Ûµ¥¡A±Na[i][j]¥[¤Wa[i][j+1]¡A¨Ã±Na[i][j+1]³]¸m¬°0
+            ; å¦‚æœç›¸ç­‰ï¼Œå°‡a[i][j]åŠ ä¸Ša[i][j+1]ï¼Œä¸¦å°‡a[i][j+1]è¨­ç½®ç‚º0
             mov bl, [boxSquare + eax]
             add [boxSquare + eax + boxSize], bl
             mov bl, 0
@@ -337,13 +337,13 @@ move PROC
             jne down_i_loop
 
         down_not_equal:
-            ; ¼W¥[j
+            ; å¢åŠ j
             inc esi
             cmp esi, boxSize - 1
             jl down_j_add_loop
             mov esi, 0
 
-        ; ¼W¥[i
+        ; å¢åŠ i
         inc ecx
         cmp ecx, boxSize
         jl down_i_loop
